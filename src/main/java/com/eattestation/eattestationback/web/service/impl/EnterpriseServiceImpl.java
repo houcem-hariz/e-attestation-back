@@ -7,6 +7,8 @@ import com.eattestation.eattestationback.web.model.Enterprise;
 import com.eattestation.eattestationback.web.service.EnterpriseService;
 
 import com.eattestation.eattestationback.web.validation.ObjectValidation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.lang.NonNull;
@@ -20,6 +22,8 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 public class EnterpriseServiceImpl implements EnterpriseService {
     private final EnterpriseDao enterpriseDao;
     private final MessageSource messageSource;
+    private static final Logger logger = LoggerFactory.getLogger(EnterpriseServiceImpl.class);
+
     private final ObjectValidation<EnterpriseDto> objectValidation = new ObjectValidation<>();
 
     public EnterpriseServiceImpl(EnterpriseDao enterpriseDao,
@@ -56,11 +60,17 @@ public class EnterpriseServiceImpl implements EnterpriseService {
             enterprise.setHasIso45001(enterpriseDto.getHasIso45001());
             return enterpriseDao.save(enterprise);
         }
-
     }
 
     @Override
     public List<Enterprise> getAll() {
         return enterpriseDao.findAll();
+    }
+
+    @Override
+    public void askForDocuments() {
+        if (logger.isInfoEnabled()) {
+            logger.info("Called purge enterprise service, retention delay {}", 1);
+        }
     }
 }

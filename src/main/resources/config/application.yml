@@ -32,3 +32,10 @@ app:
     origins: "*"
     credentials: true
     methods: GET, POST, PUT, DELETE
+
+#Scheduler
+scheduler:
+  enterprise_refresh:
+    # Toggleoff
+    enable: false
+    cron.expression: "0 * * * * ?"

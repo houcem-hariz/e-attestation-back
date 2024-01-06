@@ -9,4 +9,5 @@ import java.util.List;
 public interface EnterpriseService {
     Enterprise insertEnterprise(EnterpriseDto enterpriseDto) throws EnterpriseException;
     List<Enterprise> getAll();
+    void askForDocuments();
 }
