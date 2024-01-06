@@ -15,6 +15,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -55,22 +56,56 @@ public class EnterpriseServiceImpl implements EnterpriseService {
             enterprise = new Enterprise();
             enterprise.setEnterpriseName(enterpriseDto.getEnterpriseName());
             enterprise.setEnterpriseSiret(enterpriseDto.getEnterpriseSiret());
-            enterprise.setHasIso27001(enterpriseDto.getHasIso27001());
-            enterprise.setHasIso9001(enterpriseDto.getHasIso9001());
-            enterprise.setHasIso45001(enterpriseDto.getHasIso45001());
+            enterprise.setCertifiedIso27001(enterpriseDto.isCertifiedIso27001());
+            enterprise.setCertifiedIso9001(enterpriseDto.isCertifiedIso9001());
+            enterprise.setCertifiedIso45001(enterpriseDto.isCertifiedIso45001());
             return enterpriseDao.save(enterprise);
         }
     }
 
     @Override
-    public List<Enterprise> getAll() {
+    public List<Enterprise> getAllEnterprises() {
         return enterpriseDao.findAll();
     }
 
     @Override
     public void askForDocuments() {
         if (logger.isInfoEnabled()) {
-            logger.info("Called purge enterprise service, retention delay {}", 1);
+            logger.info("Called askForDocuments enterprise service");
         }
+
+        getAllEnterprises().stream()
+                .filter(
+                        (Predicate.not(Enterprise::isIso27001TaskExecuted)
+                                .and(Enterprise::isIso27001TaskExecuted)
+                        )
+                        .or(Predicate.not(Enterprise::isIso9001TaskExecuted)
+                                .and(Enterprise::isCertifiedIso9001)
+                        )
+                        .or(Predicate.not(Enterprise::isIso45001TaskExecuted))
+                                .and(Enterprise::isCertifiedIso45001)
+                )
+                .forEach(enterprise -> {
+                    String s = "%s (%s) : Déclenchement de la demande de document".formatted(
+                            enterprise.getEnterpriseName(),
+                            enterprise.getEnterpriseSiret());
+
+                    if(enterprise.isCertifiedIso27001()){
+                        System.out.println(String.join(" ",s, "ISO27001"));
+                        enterprise.setIso27001TaskExecuted(true);
+                    }
+
+                    if(enterprise.isCertifiedIso9001()){
+                        System.out.println(String.join(" ", s, "ISO9001"));
+                        enterprise.setIso9001TaskExecuted(true);
+                    }
+
+                    if(enterprise.isCertifiedIso45001()){
+                        System.out.println(String.join(" ",s, "ISO45001"));
+                        enterprise.setIso45001TaskExecuted(true);
+                    }
+
+                    enterpriseDao.save(enterprise);
+                });
     }
 }

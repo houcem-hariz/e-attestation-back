@@ -17,29 +17,32 @@ public class Enterprise implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    /** The enterprise id. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "enterprise_id", unique = true, nullable = false)
     private Long enterpriseId;
 
-    /** The enterprise name. */
     @Column(name = "enterprise_name", nullable = false)
     private String enterpriseName;
 
-    /** The enterprise SIRET. */
     @Column(name = "enterprise_siret", unique = true, nullable = false)
     private String enterpriseSiret;
 
-    /** The email. */
-    @Column(name = "has_iso_27001", nullable = false)
-    private boolean hasIso27001;
+    @Column(name = "certified_iso_27001", nullable = false)
+    private boolean certifiedIso27001;
 
-    /** The email. */
-    @Column(name = "has_iso_9001", nullable = false)
-    private boolean hasIso9001;
+    @Column(name = "certified_iso_9001", nullable = false)
+    private boolean certifiedIso9001;
 
-    /** The email. */
-    @Column(name = "has_iso_45001", nullable = false)
-    private boolean hasIso45001;
+    @Column(name = "certified_iso_45001", nullable = false)
+    private boolean certifiedIso45001;
+
+    @Column(name = "iso_27001_task_executed", nullable = false)
+    private boolean iso27001TaskExecuted;
+
+    @Column(name = "iso_9001_task_executed", nullable = false)
+    private boolean iso9001TaskExecuted;
+
+    @Column(name = "iso_45001_task_executed", nullable = false)
+    private boolean iso45001TaskExecuted;
 }

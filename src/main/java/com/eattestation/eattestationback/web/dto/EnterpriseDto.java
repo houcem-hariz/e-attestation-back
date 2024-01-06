@@ -24,12 +24,12 @@ public class EnterpriseDto {
     @Pattern(regexp="\\d{14}", message = "Le SIRET de l'entreprise doit contenir 14 chiffres exactement")
     private String enterpriseSiret;
 
-    @NotNull(message = "hasIso27001 est obligatoire")
-    private Boolean hasIso27001;
+    @NotNull(message = "certifiedIso27001 est obligatoire")
+    private boolean certifiedIso27001;
 
-    @NotNull(message = "hasIso9001 est obligatoire")
-    private Boolean hasIso9001;
+    @NotNull(message = "certifiedIso9001 est obligatoire")
+    private boolean certifiedIso9001;
 
-    @NotNull(message = "hasIso45001 est obligatoire")
-    private Boolean hasIso45001;
+    @NotNull(message = "certifiedIso45001 est obligatoire")
+    private boolean certifiedIso45001;
 }

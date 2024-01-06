@@ -31,6 +31,6 @@ public class EnterpriseController {
 
     @GetMapping
     public List<Enterprise> getAll() {
-        return enterpriseService.getAll();
+        return enterpriseService.getAllEnterprises();
     }
 }

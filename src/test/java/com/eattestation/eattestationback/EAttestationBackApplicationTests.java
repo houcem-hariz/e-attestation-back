@@ -53,6 +53,9 @@ class EAttestationBackApplicationTests {
                         "12345678912345",
                         true,
                         true,
+                        false,
+                        false,
+                        false,
                         false
                 ),
                 new Enterprise(
@@ -61,12 +64,15 @@ class EAttestationBackApplicationTests {
                         "12345678912345",
                         true,
                         true,
+                        false,
+                        false,
+                        false,
                         false
                 )
         ));
 
         when(enterpriseDao.findAll()).thenReturn(list);
-        List<Enterprise> enterpriseList = enterpriseService.getAll();
+        List<Enterprise> enterpriseList = enterpriseService.getAllEnterprises();
         assertEquals(2, enterpriseList.size());
         verify(enterpriseDao, times(1)).findAll();
     }

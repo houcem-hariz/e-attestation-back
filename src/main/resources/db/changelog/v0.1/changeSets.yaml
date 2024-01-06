@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Houcem
+      changes:
+        - addColumn:
+            tableName: enterprise
+            columns:
+              - column:
+                  name: iso_27001_task_executed
+                  type: boolean
+                  defaultValueBoolean: false
+              - column:
+                  name: iso_9001_task_executed
+                  type: boolean
+                  defaultValueBoolean: false
+              - column:
+                  name: iso_45001_task_executed
+                  type: boolean
+                  defaultValueBoolean: false
